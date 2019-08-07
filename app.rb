@@ -37,7 +37,7 @@ post '/admin' do
   @password = params[:password]
 
   if @username == 'admin' && @password == 'admin'
-    @users_file = File.open('users.txt', 'r')
+    @users_file = File.open('./public/users.txt', 'r')
     erb :user_list
   # else
   #   erb :index
@@ -52,12 +52,13 @@ post '/' do
   @user_name = params[:user_name]
   @phone = params[:phone]
   @date_time = params[:date_time]
+  @hair_dresser = params[:hair_dresser]
 
-  f = File.open('users.txt', 'a')
-  f.write("User: #{@user_name}, Phone: #{@phone}, Date and Time: #{@date_time}\n")
+  f = File.open('./public/users.txt', 'a')
+  f.write("User: #{@user_name}, Phone: #{@phone}, Date and Time: #{@date_time}, HairDresser: #{@hair_dresser} \n")
   f.close
 
-  halt erb "Уважаемый #{@user_name}, Вы зарегистрировались на #{@date_time}. Спасибо"
+  halt erb "Уважаемый #{@user_name}, Вы зарегистрировались на #{@date_time} к мастеру: #{@hair_dresser}. Спасибо"
 end
 
 post '/login/attempt' do
@@ -86,4 +87,15 @@ end
 
 get '/contacts' do
   erb :contacts
+end
+
+post '/contacts' do
+  erb :contacts
+  @email = params[:email]
+
+  f = File.open('./public/contacts.txt', 'a')
+  f.write("#{@email}\n")
+  f.close
+
+  halt erb "С Вашего электронного адреса: #{@email} отправленно письмо. Спасибо."
 end
